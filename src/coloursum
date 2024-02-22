@@ -1,0 +1,31 @@
+/**
+* COLOURSUM(rangeSpec;colorCellSpec)
+**/
+
+function COLOURSUM(rangeSpec, colorCellSpec) {
+
+  var currRange = SpreadsheetApp.getActiveRange();
+  var currCellFormula = currRange.getFormula();
+  const rangeRegex = /\((.*?)\;/;
+  const rangeMatch = currCellFormula.match(rangeRegex);
+  const range = rangeMatch[1];
+
+  const cellRegex = /\;(.*?)\)/;
+  const cellMatch = currCellFormula.match(cellRegex);
+  const cell = cellMatch[1];
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet();
+  const colorsToCheck = sheet.getRange(range).getBackgrounds();
+  var sumValues = sheet.getRange(range).getValues();
+  const doneColor = sheet.getRange(cell).getBackgrounds()[0][0];
+  var totalValue = 0;
+  for ( let i = 0; i < colorsToCheck.length; i++ ) {
+    for ( let j = 0; j < colorsToCheck[i].length; j++ ) {
+      const color = colorsToCheck[i][j];
+      if ( color === doneColor && typeof sumValues[i][j] === 'number' && !isNaN(sumValues[i][j])) {
+        totalValue = totalValue + (sumValues[i][j]);
+      }
+    }
+  }
+  return totalValue;
+};
