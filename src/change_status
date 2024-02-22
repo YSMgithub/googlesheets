@@ -1,0 +1,31 @@
+function checkStatus1() {
+  
+  /** Задаем столбцы */
+
+  // Столбец с номерами полюсов
+  var idColumn = "C:C";
+
+ // Столбец с чем сравнивать
+  var searchColumn = "'Лист2'!A:A";
+
+  // столбец где менять статус
+  var statusColumn = 11;
+
+  //var sheet = SpreadsheetApp.getActive();
+  
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  var rangeValues = sheet.getRange(searchColumn).getValues();
+  var cellData = sheet.getRange(idColumn).getValues();
+
+  for (var i = 0; i < rangeValues.length; i++) {
+    for (var j = 0; j < cellData.length; j++) {
+      if (rangeValues[i][0] == cellData[j][0] && cellData[j][0] !== "") {
+        var row = j + 1;
+        var cellToApprove = sheet.getRange(row, statusColumn);
+        cellToApprove.setValue('Оплачен у нас');
+      }
+    }
+  }
+  
+};
